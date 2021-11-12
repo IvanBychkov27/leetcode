@@ -16,10 +16,12 @@ Output: Because nums[0] + nums[1] == 9, we return [0, 1].
 */
 
 func main() {
-	nums := []int{2, 7, 11, 15, 9, 112, 14, 16, 20, 22, 44, 55, 66, 1, 23, 3, 5}
-	target := 10
+	nums := []int{2, 7, 11, 15}
+	target := 9
 
 	fmt.Println("res1 =", twoSum(nums, target))
+	fmt.Println("res2 =", twoSum2(nums, target))
+	fmt.Println("res3 =", twoSum3(nums, target))
 }
 
 func twoSum(nums []int, target int) []int {
@@ -28,8 +30,40 @@ func twoSum(nums []int, target int) []int {
 		for j := i + 1; j < len(nums); j++ {
 			if nums[i]+nums[j] == target {
 				res = append(res, i, j)
+				return res
 			}
 		}
 	}
 	return res
+}
+
+func twoSum2(nums []int, target int) []int {
+	r := make(map[int]int)
+	for i, v := range nums {
+		idx, ok := r[target-v]
+		if ok {
+			return []int{idx, i}
+		}
+		r[v] = i
+	}
+	return nil
+}
+
+func twoSum3(nums []int, target int) []int {
+	var i int
+	l := len(nums)
+	r := make(map[int]int)
+	for {
+		idx, ok := r[target-nums[i]]
+		if ok {
+			return []int{idx, i}
+		}
+		r[nums[i]] = i
+		i++
+
+		if i == l {
+			break
+		}
+	}
+	return nil
 }
