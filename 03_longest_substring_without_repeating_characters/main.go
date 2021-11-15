@@ -14,46 +14,35 @@ func main() {
 	//s := "bbbbb" // 1
 	//s := "" // 0
 	//s := "pwwkew" // 3
-	s := "pwwkewwacd" // 4
+	//s := "pwwkewwacd" // 4
+	s := "pwwkewwacwkdfg" // 7
 
 	res := lengthOfLongestSubstring(s)
 	fmt.Println("res =", res)
 }
 
 func lengthOfLongestSubstring(s string) int {
-	var idx, res int
-	sRes := make([]byte, 0, len(s))
-	temp := make([]byte, 0, len(s))
-	m := make(map[byte]struct{})
+	var idx, res, p int
+	m := make(map[byte]int)
 	data := []byte(s)
 	for j := 0; j < len(data)-res; j++ {
 		for i := j; i < len(data); i++ {
+			var ok bool
 			d := data[i]
-			_, ok := m[d]
+			p, ok = m[d]
 			if ok {
-				if res < idx {
-					res = idx
-					sRes = temp
-				}
-				m = make(map[byte]struct{})
-				idx = 0
-				temp = nil
-				continue
+				j = p
+				break
 			}
-			m[d] = struct{}{}
-			temp = append(temp, d)
+			m[d] = i
 			idx++
 		}
 
 		if res < idx {
 			res = idx
-			sRes = temp
 		}
-		m = make(map[byte]struct{})
+		m = make(map[byte]int)
 		idx = 0
-		temp = nil
-
 	}
-	fmt.Println("str =", string(sRes))
 	return res
 }
