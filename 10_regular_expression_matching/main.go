@@ -43,6 +43,7 @@ func main() {
 	//s, p := "i", "." // true
 	//s, p := "aaa", "aaaa" // false
 	s, p := "aaba", "ab*a*c*a" // false
+	//s, p := "aaca", "ab*a*c*a" // true
 
 	res := isMatch(s, p)
 	fmt.Println("res  =", res)
@@ -71,10 +72,10 @@ func isMatch(s string, p string) bool {
 			return false
 		}
 		if idxD > 0 {
-			predD = data[idxD]
+			predD = data[idxD-1]
 		}
 		if idxS > 0 {
-			predS = shablon[idxS]
+			predS = shablon[idxS-1]
 		}
 
 		if data[idxD] != shablon[idxS] && shablon[idxS] == '.' {
@@ -99,22 +100,21 @@ func isMatch(s string, p string) bool {
 		}
 
 		if data[idxD] != shablon[idxS] && shablon[idxS] == '*' {
-			if data[idxD] != predD && predS != '.' {
+			if data[idxD] != predD && predS != '.' && predD != predS {
 				return false
 			}
-			//if data[idxD-1] == shablon[idxS-1] {
-			//	idxS++
-			//	continue
-			//}
+
+			if data[idxD] != predD && predD == predS {
+				idxS++
+				continue
+			}
+
 			idxD++
 			idxS++
 			continue
 		}
-
 		idxD++
 		idxS++
-
 	}
-
 	return true
 }
