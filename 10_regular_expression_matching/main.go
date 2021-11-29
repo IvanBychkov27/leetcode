@@ -42,11 +42,19 @@ func main() {
 	//s, p := "mississippi", "mis*is*ip*." // true
 	//s, p := "i", "." // true
 	//s, p := "aaa", "aaaa" // false
-	s, p := "aaba", "ab*a*c*a" // false
-	//s, p := "aaca", "ab*a*c*a" // true
+	//s, p := "aaba", "ab*a*c*a" // false
+	//s, p, r := "aaca", "ab*a*c*a", true
+	//s, p, r := "aaa", ".*", true
+	s, p, r := "a", "ab*a", false
 
 	res := isMatch(s, p)
 	fmt.Println("res  =", res)
+	fmt.Println()
+	if res == r {
+		fmt.Println("OK")
+	} else {
+		fmt.Println("NO")
+	}
 }
 
 func isMatch(s string, p string) bool {
@@ -61,8 +69,15 @@ func isMatch(s string, p string) bool {
 		return s == p
 	}
 
+	if lenS == 2 && shablon[0] == '.' && shablon[1] == '*' {
+		return true
+	}
+
 	for {
 		if idxD >= lenD {
+			//if lenD < lenS && shablon[lenS-1] != '*' {
+			//	return false
+			//}
 			if data[lenD-1] != shablon[lenS-1] && shablon[lenS-1] != '*' && shablon[lenS-1] != '.' {
 				return false
 			}

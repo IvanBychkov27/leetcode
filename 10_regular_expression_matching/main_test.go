@@ -118,6 +118,22 @@ func Test_isMatch(t *testing.T) {
 			},
 			want: true,
 		},
+		{
+			name: "14",
+			args: args{
+				s: "aaa",
+				p: ".*",
+			},
+			want: true,
+		},
+		//{
+		//	name: "15",
+		//	args: args{
+		//		s: "a",
+		//		p: "ab*a",
+		//	},
+		//	want: false,
+		//},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
