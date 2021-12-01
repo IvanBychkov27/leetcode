@@ -55,12 +55,12 @@ func intToRoman(num int) string {
 		d := num % 10
 		num /= 10
 
-		s := sim[i]
 		f := 0
 		if d >= 5 {
 			f = 1
 		}
 
+		s := sim[i]
 		if d != (4 + 5*f) {
 			for j := 0; j < (d - 5*f); j++ {
 				s += sim[i-1]
