@@ -27,11 +27,8 @@ type ListNode struct {
 	ID   int       // индекс узла
 	Val  int       // данные узла
 	Info *ListInfo // информация по списку
-	//Head *ListNode // указатель на головной узел (голова)
 	Next *ListNode // указатель на следующий узел
 	Prev *ListNode // указатель на предыдущий узел
-	//Tail *ListNode // указатель на последний узел (хвост)
-	//Len  int       // длина списка
 }
 
 func main() {
