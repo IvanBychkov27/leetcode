@@ -1,4 +1,5 @@
 /* Источник
+https://nuancesprog.ru/p/6978/?ysclid=l56vtfyg2v938483792
 https://github.com/puneeth8994/binary-tree-go-impl/blob/master/main.go
 */
 
