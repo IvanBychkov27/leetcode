@@ -16,7 +16,7 @@ import (
 
 func main() {
 	x := 2.0
-	n := 7
+	n := 31
 	fmt.Printf("%.0f ^ %d = %f\n", x, n, math.Pow(x, float64(n)))
 	fmt.Printf("%.0f ^ %d = %f\n", x, n, myPow(x, n))
 }
