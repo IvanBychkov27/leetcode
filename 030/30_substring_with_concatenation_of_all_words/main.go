@@ -19,7 +19,12 @@ Time Limit Exceeded
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sort"
+	"strings"
+	"time"
+)
 
 func main() {
 	//s, words := "barfoothefoobarman", []string{"foo", "bar"} // [0,9]
@@ -27,7 +32,12 @@ func main() {
 	//s, words := "barfoofoobarthefoobarman", []string{"bar", "foo", "the"} // [6,9,12]
 	//s, words := "wordgoodgoodgoodbestword", []string{"word", "good", "best", "good"} // [8]
 	//s, words := "bcabbcaabbccacacbabccacaababcbb", []string{"c", "b", "a", "c", "a", "a", "a", "b", "c"} // [6,16,17,18,19,20]
-	s, words := "baaaacbcc", []string{"bc", "ac", "aa", "ba"} // [0]
+	//s, words := "baaaacbcc", []string{"bc", "ac", "aa", "ba"} // [0]
+	s, words := "pjzkrkevzztxductzzxmxsvwjkxpvukmfjywwetvfnujhweiybwvvsrfequzkhossmootkmyxgjgfordrpapjuunmqnxxdrqrfgkrsjqbszgiqlcfnrpjlcwdrvbumtotzylshdvccdmsqoadfrpsvnwpizlwszrtyclhgilklydbmfhuywotjmktnwrfvizvnmfvvqfiokkdprznnnjycttprkxpuykhmpchiksyucbmtabiqkisgbhxngmhezrrqvayfsxauampdpxtafniiwfvdufhtwajrbkxtjzqjnfocdhekumttuqwovfjrgulhekcpjszyynadxhnttgmnxkduqmmyhzfnjhducesctufqbumxbamalqudeibljgbspeotkgvddcwgxidaiqcvgwykhbysjzlzfbupkqunuqtraxrlptivshhbihtsigtpipguhbhctcvubnhqipncyxfjebdnjyetnlnvmuxhzsdahkrscewabejifmxombiamxvauuitoltyymsarqcuuoezcbqpdaprxmsrickwpgwpsoplhugbikbkotzrtqkscekkgwjycfnvwfgdzogjzjvpcvixnsqsxacfwndzvrwrycwxrcismdhqapoojegggkocyrdtkzmiekhxoppctytvphjynrhtcvxcobxbcjjivtfjiwmduhzjokkbctweqtigwfhzorjlkpuuliaipbtfldinyetoybvugevwvhhhweejogrghllsouipabfafcxnhukcbtmxzshoyyufjhzadhrelweszbfgwpkzlwxkogyogutscvuhcllphshivnoteztpxsaoaacgxyaztuixhunrowzljqfqrahosheukhahhbiaxqzfmmwcjxountkevsvpbzjnilwpoermxrtlfroqoclexxisrdhvfsindffslyekrzwzqkpeocilatftymodgztjgybtyheqgcpwogdcjlnlesefgvimwbxcbzvaibspdjnrpqtyeilkcspknyylbwndvkffmzuriilxagyerjptbgeqgebiaqnvdubrtxibhvakcyotkfonmseszhczapxdlauexehhaireihxsplgdgmxfvaevrbadbwjbdrkfbbjjkgcztkcbwagtcnrtqryuqixtzhaakjlurnumzyovawrcjiwabuwretmdamfkxrgqgcdgbrdbnugzecbgyxxdqmisaqcyjkqrntxqmdrczxbebemcblftxplafnyoxqimkhcykwamvdsxjezkpgdpvopddptdfbprjustquhlazkjfluxrzopqdstulybnqvyknrchbphcarknnhhovweaqawdyxsqsqahkepluypwrzjegqtdoxfgzdkydeoxvrfhxusrujnmjzqrrlxglcmkiykldbiasnhrjbjekystzilrwkzhontwmehrfsrzfaqrbbxncphbzuuxeteshyrveamjsfiaharkcqxefghgceeixkdgkuboupxnwhnfigpkwnqdvzlydpidcljmflbccarbiegsmweklwngvygbqpescpeichmfidgsjmkvkofvkuehsmkkbocgejoiqcnafvuokelwuqsgkyoekaroptuvekfvmtxtqshcwsztkrzwrpabqrrhnlerxjojemcxel",
+		[]string{"dhvf", "sind", "ffsl", "yekr", "zwzq", "kpeo", "cila", "tfty", "modg", "ztjg", "ybty", "heqg", "cpwo", "gdcj", "lnle", "sefg", "vimw", "bxcb"} // [ 935 ]
+
+	//s, words := "faoucbmnvdujheznbntaszqsxicczlagnqbrsnfptbycfapjnkjflbzilemkpotehwvblcsefqgnsxwgkhnvjpgutuhklcosylvjonqtfyiyyegimtfxilrdiantcdncpiofxgaegjcenkobguyqhsupsjkxnxbehrjgxjlespiiazjiviyeaswuegtrexxnogumrfskwcuwbfgynfdpzzmdfhwletbvbvjtcbfydbxhgdfuiilkhznpjmcnhdkjytecujbykafqdkmovaacbntkbwyjziuaeycyhfytfdllqybnabpbqlmujmdiwxkaxnzeuxzcdknvkqimtzojkcdtoiemhonedokanjcswpnihvvaxlljprdfzjrhzgnfwyfkjhchyssfppfmaqwrjbwjmnslwhqsfverejacbshshohjhdaqgwzsmtfkbycitjzasccvukpcywlhboyjkzdyvjiwhngcwicqkhnercgrzuzcizmuyptvadrhqymmgqeqxrwqwfivzjzjklfkbygbczlszzhfpnxpfwfdbpacazlklqxordrveepedwlvmjktfrwihwkjvvugntweyqzcupgynstzdfskwqsfmcpixlqmenrcfsezjlxzdsyiztswjkdymsgldwxhlqlqjqsudptikuqjpihyslwgderjdqsqhejswbmzqihcczorhvrbiqhouaxxqroxvxrragssozvqajhhgakrqrfltekkvajtzbkzhfsvepnfawoiwzznsgammmykphdoipqrukobzbizxyhuxjjsrjgexgomntbyktphdekchsdfqmbqxkkpvstsyjfleilqbdxgjhkqbnvsbwkzguodmjwkubxaljqomouvxelztjtwhdvqzltlwpxssusffjtrznowtavmlojstgisuefsvclozdteopwnckmwmjkzavstecoyitsewduvjpzzexnjkbhykrympsitwwtfpllnrfiaukzzjoivrrueisqxmysiulpmzazqfkqcwrbfilbzcxfmrwmdwelrsbfrdehjqznmsquabxcfuhtlfhqcmbvgeaxkggvxfilxyfabecgalbnrjdtxhodnqcxwisvpahmyomztqhveljvumotteyhuagskzozbxlclabgslcwylruzhnvnlejnkcxlswnpjrajsjefnadauxzbmwrzaamnclauhplrgocbxggkjmkdllgykzzkamzcxazhpkywycxxlfhuttzfhhfrhedjqfnqfmxwzxuxztxmzgischzjrecajhjbmwrtlqqknmjpgg",
+	//	[]string{"mntbyktphdekchsdfqmbq", "zznsgammmykphdoipqruk", "hyssfppfmaqwrjbwjmnsl", "hkqbnvsbwkzguodmjwkub", "qsqhejswbmzqihcczorhv", "xaljqomouvxelztjtwhdv", "dptikuqjpihyslwgderjd", "sozvqajhhgakrqrfltekk", "lszzhfpnxpfwfdbpacazl", "tavmlojstgisuefsvcloz", "wjkdymsgldwxhlqlqjqsu", "dteopwnckmwmjkzavstec", "obzbizxyhuxjjsrjgexgo", "rwqwfivzjzjklfkbygbcz", "whngcwicqkhnercgrzuzc", "frwihwkjvvugntweyqzcu", "rbiqhouaxxqroxvxrrags", "qmenrcfsezjlxzdsyizts", "cvukpcywlhboyjkzdyvji", "xkkpvstsyjfleilqbdxgj", "ykrympsitwwtfpllnrfia", "daqgwzsmtfkbycitjzasc", "whqsfverejacbshshohjh", "oyitsewduvjpzzexnjkbh", "izmuyptvadrhqymmgqeqx", "klqxordrveepedwlvmjkt", "qzltlwpxssusffjtrznow", "pgynstzdfskwqsfmcpixl", "vajtzbkzhfsvepnfawoiw"} // [0]
 
 	res := findSubstring(s, words)
 	fmt.Println("res =", res)
@@ -38,29 +48,91 @@ func main() {
 
 func findSubstring(s string, words []string) []int {
 	res := []int{}
-	ids := combinations(len(words))
+	if s == "" || len(words) == 0 {
+		return res
+	}
+	lWords := len(words) * len(words[0])
 
-	//fmt.Printf("n = %d  fact = %d \n", len(words), factorial(len(words)))
-	//fmt.Println("len ids", len(ids))
+	timeInterval := time.Now()
 
-	lWords := lenWords(words)
 	for i := 0; i < len(s)-lWords+1; i++ {
-		for _, id := range ids {
-			sumWords := ""
-			for _, idx := range id {
-				sumWords += words[idx]
-			}
+		okInclusion := inclusion(s[i:i+lWords], words)
+		if !okInclusion {
+			continue
+		}
 
-			if s[i:i+lWords] == sumWords {
-				if search(res, i) {
-					continue
-				}
-				res = append(res, i)
+		ok := []bool{false}
+		compare(ok, s[i:i+lWords], words, 0)
+		if ok[0] {
+			if search(res, i) {
+				continue
 			}
+			res = append(res, i)
+		}
+
+		if time.Now().Sub(timeInterval).Seconds() > float64(10) {
+			fmt.Println("timeout output...")
+			break
 		}
 	}
 
+	fmt.Println(time.Now().Sub(timeInterval))
+
 	return res
+}
+
+// вхождение
+func inclusion(s string, ws []string) bool {
+	for _, w := range ws {
+		idx := strings.Index(s, w)
+		if idx == -1 {
+			return false
+		}
+	}
+	return true
+}
+
+// вхождение
+func inclusion1(s string, ws []string) ([]string, bool) {
+	wIdx := make(map[int]string)
+	id := make([]int, 0, len(ws))
+	res := make([]string, 0, len(ws))
+
+	for i, w := range ws {
+		idx := strings.Index(s, w)
+		if i == -1 {
+			return res, false
+		}
+		wIdx[idx] = w
+		id = append(id, i)
+	}
+
+	sort.Ints(id)
+
+	for _, idx := range id {
+		res = append(res, ws[idx])
+	}
+
+	return res, true
+}
+
+func compare(ok []bool, s string, words []string, n int) {
+	if n == len(words)-1 {
+		if s == strings.Join(words, "") {
+			ok[0] = true
+			return
+		}
+		return
+	}
+
+	for i := n; i < len(words); i++ {
+		words[n], words[i] = words[i], words[n]
+		compare(ok, s, words, n+1)
+		words[n], words[i] = words[i], words[n]
+		if ok[0] {
+			return
+		}
+	}
 }
 
 func search(res []int, i int) bool {
@@ -71,312 +143,3 @@ func search(res []int, i int) bool {
 	}
 	return false
 }
-
-func lenWords(words []string) int {
-	n := 0
-	for _, w := range words {
-		n += len(w)
-	}
-	return n
-}
-
-// нахождение всех возможных вариантов перестановок индексов
-func combinations(n int) [][]int {
-	res := make([][]int, 0, factorial(n))
-
-	if n == 1 {
-		return [][]int{{0}}
-	}
-
-	if n == 2 {
-		return [][]int{{0, 1}, {1, 0}}
-	}
-
-	if n == 3 {
-		return [][]int{{0, 1, 2}, {0, 2, 1}, {1, 0, 2}, {1, 2, 0}, {2, 0, 1}, {2, 1, 0}}
-	}
-
-	if n == 4 {
-		return [][]int{{0, 1, 2, 3}, {0, 1, 3, 2}, {0, 2, 1, 3}, {0, 2, 3, 1}, {0, 3, 1, 2}, {0, 3, 2, 1}, {1, 0, 2, 3}, {1, 0, 3, 2}, {1, 2, 0, 3}, {1, 2, 3, 0}, {1, 3, 0, 2},
-			{1, 3, 2, 0}, {2, 0, 1, 3}, {2, 0, 3, 1}, {2, 1, 0, 3}, {2, 1, 3, 0}, {2, 3, 0, 1}, {2, 3, 1, 0}, {3, 0, 1, 2}, {3, 0, 2, 1}, {3, 1, 0, 2}, {3, 1, 2, 0}, {3, 2, 0, 1}, {3, 2, 1, 0}}
-	}
-
-	if n == 5 {
-		return [][]int{{0, 1, 2, 3, 4}, {0, 1, 2, 4, 3}, {0, 1, 3, 2, 4}, {0, 1, 3, 4, 2}, {0, 1, 4, 2, 3}, {0, 1, 4, 3, 2},
-			{0, 2, 1, 3, 4}, {0, 2, 1, 4, 3}, {0, 2, 3, 1, 4}, {0, 2, 3, 4, 1}, {0, 2, 4, 1, 3}, {0, 2, 4, 3, 1}, {0, 3, 1, 2, 4},
-			{0, 3, 1, 4, 2}, {0, 3, 2, 1, 4}, {0, 3, 2, 4, 1}, {0, 3, 4, 1, 2}, {0, 3, 4, 2, 1}, {0, 4, 1, 2, 3}, {0, 4, 1, 3, 2},
-			{0, 4, 2, 1, 3}, {0, 4, 2, 3, 1}, {0, 4, 3, 1, 2}, {0, 4, 3, 2, 1}, {1, 0, 2, 3, 4}, {1, 0, 2, 4, 3}, {1, 0, 3, 2, 4},
-			{1, 0, 3, 4, 2}, {1, 0, 4, 2, 3}, {1, 0, 4, 3, 2}, {1, 2, 0, 3, 4}, {1, 2, 0, 4, 3}, {1, 2, 3, 0, 4}, {1, 2, 3, 4, 0},
-			{1, 2, 4, 0, 3}, {1, 2, 4, 3, 0}, {1, 3, 0, 2, 4}, {1, 3, 0, 4, 2}, {1, 3, 2, 0, 4}, {1, 3, 2, 4, 0}, {1, 3, 4, 0, 2},
-			{1, 3, 4, 2, 0}, {1, 4, 0, 2, 3}, {1, 4, 0, 3, 2}, {1, 4, 2, 0, 3}, {1, 4, 2, 3, 0}, {1, 4, 3, 0, 2}, {1, 4, 3, 2, 0},
-			{2, 0, 1, 3, 4}, {2, 0, 1, 4, 3}, {2, 0, 3, 1, 4}, {2, 0, 3, 4, 1}, {2, 0, 4, 1, 3}, {2, 0, 4, 3, 1}, {2, 1, 0, 3, 4},
-			{2, 1, 0, 4, 3}, {2, 1, 3, 0, 4}, {2, 1, 3, 4, 0}, {2, 1, 4, 0, 3}, {2, 1, 4, 3, 0}, {2, 3, 0, 1, 4}, {2, 3, 0, 4, 1},
-			{2, 3, 1, 0, 4}, {2, 3, 1, 4, 0}, {2, 3, 4, 0, 1}, {2, 3, 4, 1, 0}, {2, 4, 0, 1, 3}, {2, 4, 0, 3, 1}, {2, 4, 1, 0, 3},
-			{2, 4, 1, 3, 0}, {2, 4, 3, 0, 1}, {2, 4, 3, 1, 0}, {3, 0, 1, 2, 4}, {3, 0, 1, 4, 2}, {3, 0, 2, 1, 4}, {3, 0, 2, 4, 1},
-			{3, 0, 4, 1, 2}, {3, 0, 4, 2, 1}, {3, 1, 0, 2, 4}, {3, 1, 0, 4, 2}, {3, 1, 2, 0, 4}, {3, 1, 2, 4, 0}, {3, 1, 4, 0, 2},
-			{3, 1, 4, 2, 0}, {3, 2, 0, 1, 4}, {3, 2, 0, 4, 1}, {3, 2, 1, 0, 4}, {3, 2, 1, 4, 0}, {3, 2, 4, 0, 1}, {3, 2, 4, 1, 0},
-			{3, 4, 0, 1, 2}, {3, 4, 0, 2, 1}, {3, 4, 1, 0, 2}, {3, 4, 1, 2, 0}, {3, 4, 2, 0, 1}, {3, 4, 2, 1, 0}, {4, 0, 1, 2, 3},
-			{4, 0, 1, 3, 2}, {4, 0, 2, 1, 3}, {4, 0, 2, 3, 1}, {4, 0, 3, 1, 2}, {4, 0, 3, 2, 1}, {4, 1, 0, 2, 3}, {4, 1, 0, 3, 2},
-			{4, 1, 2, 0, 3}, {4, 1, 2, 3, 0}, {4, 1, 3, 0, 2}, {4, 1, 3, 2, 0}, {4, 2, 0, 1, 3}, {4, 2, 0, 3, 1}, {4, 2, 1, 0, 3},
-			{4, 2, 1, 3, 0}, {4, 2, 3, 0, 1}, {4, 2, 3, 1, 0}, {4, 3, 0, 1, 2}, {4, 3, 0, 2, 1}, {4, 3, 1, 0, 2}, {4, 3, 1, 2, 0},
-			{4, 3, 2, 0, 1}, {4, 3, 2, 1, 0}}
-	}
-
-	if n == 6 {
-		return [][]int{{0, 1, 2, 3, 4, 5}, {0, 1, 2, 3, 5, 4}, {0, 1, 2, 4, 3, 5}, {0, 1, 2, 4, 5, 3}, {0, 1, 2, 5, 3, 4}, {0, 1, 2, 5, 4, 3}, {0, 1, 3, 2, 4, 5}, {0, 1, 3, 2, 5, 4}, {0, 1, 3, 4, 2, 5},
-			{0, 1, 3, 4, 5, 2}, {0, 1, 3, 5, 2, 4}, {0, 1, 3, 5, 4, 2}, {0, 1, 4, 2, 3, 5}, {0, 1, 4, 2, 5, 3}, {0, 1, 4, 3, 2, 5}, {0, 1, 4, 3, 5, 2}, {0, 1, 4, 5, 2, 3}, {0, 1, 4, 5, 3, 2}, {0, 1, 5, 2, 3, 4},
-			{0, 1, 5, 2, 4, 3}, {0, 1, 5, 3, 2, 4}, {0, 1, 5, 3, 4, 2}, {0, 1, 5, 4, 2, 3}, {0, 1, 5, 4, 3, 2}, {0, 2, 1, 3, 4, 5}, {0, 2, 1, 3, 5, 4}, {0, 2, 1, 4, 3, 5}, {0, 2, 1, 4, 5, 3}, {0, 2, 1, 5, 3, 4},
-			{0, 2, 1, 5, 4, 3}, {0, 2, 3, 1, 4, 5}, {0, 2, 3, 1, 5, 4}, {0, 2, 3, 4, 1, 5}, {0, 2, 3, 4, 5, 1}, {0, 2, 3, 5, 1, 4}, {0, 2, 3, 5, 4, 1}, {0, 2, 4, 1, 3, 5}, {0, 2, 4, 1, 5, 3}, {0, 2, 4, 3, 1, 5},
-			{0, 2, 4, 3, 5, 1}, {0, 2, 4, 5, 1, 3}, {0, 2, 4, 5, 3, 1}, {0, 2, 5, 1, 3, 4}, {0, 2, 5, 1, 4, 3}, {0, 2, 5, 3, 1, 4}, {0, 2, 5, 3, 4, 1}, {0, 2, 5, 4, 1, 3}, {0, 2, 5, 4, 3, 1}, {0, 3, 1, 2, 4, 5},
-			{0, 3, 1, 2, 5, 4}, {0, 3, 1, 4, 2, 5}, {0, 3, 1, 4, 5, 2}, {0, 3, 1, 5, 2, 4}, {0, 3, 1, 5, 4, 2}, {0, 3, 2, 1, 4, 5}, {0, 3, 2, 1, 5, 4}, {0, 3, 2, 4, 1, 5}, {0, 3, 2, 4, 5, 1}, {0, 3, 2, 5, 1, 4},
-			{0, 3, 2, 5, 4, 1}, {0, 3, 4, 1, 2, 5}, {0, 3, 4, 1, 5, 2}, {0, 3, 4, 2, 1, 5}, {0, 3, 4, 2, 5, 1}, {0, 3, 4, 5, 1, 2}, {0, 3, 4, 5, 2, 1}, {0, 3, 5, 1, 2, 4}, {0, 3, 5, 1, 4, 2}, {0, 3, 5, 2, 1, 4},
-			{0, 3, 5, 2, 4, 1}, {0, 3, 5, 4, 1, 2}, {0, 3, 5, 4, 2, 1}, {0, 4, 1, 2, 3, 5}, {0, 4, 1, 2, 5, 3}, {0, 4, 1, 3, 2, 5}, {0, 4, 1, 3, 5, 2}, {0, 4, 1, 5, 2, 3}, {0, 4, 1, 5, 3, 2}, {0, 4, 2, 1, 3, 5},
-			{0, 4, 2, 1, 5, 3}, {0, 4, 2, 3, 1, 5}, {0, 4, 2, 3, 5, 1}, {0, 4, 2, 5, 1, 3}, {0, 4, 2, 5, 3, 1}, {0, 4, 3, 1, 2, 5}, {0, 4, 3, 1, 5, 2}, {0, 4, 3, 2, 1, 5}, {0, 4, 3, 2, 5, 1}, {0, 4, 3, 5, 1, 2},
-			{0, 4, 3, 5, 2, 1}, {0, 4, 5, 1, 2, 3}, {0, 4, 5, 1, 3, 2}, {0, 4, 5, 2, 1, 3}, {0, 4, 5, 2, 3, 1}, {0, 4, 5, 3, 1, 2}, {0, 4, 5, 3, 2, 1}, {0, 5, 1, 2, 3, 4}, {0, 5, 1, 2, 4, 3}, {0, 5, 1, 3, 2, 4},
-			{0, 5, 1, 3, 4, 2}, {0, 5, 1, 4, 2, 3}, {0, 5, 1, 4, 3, 2}, {0, 5, 2, 1, 3, 4}, {0, 5, 2, 1, 4, 3}, {0, 5, 2, 3, 1, 4}, {0, 5, 2, 3, 4, 1}, {0, 5, 2, 4, 1, 3}, {0, 5, 2, 4, 3, 1}, {0, 5, 3, 1, 2, 4},
-			{0, 5, 3, 1, 4, 2}, {0, 5, 3, 2, 1, 4}, {0, 5, 3, 2, 4, 1}, {0, 5, 3, 4, 1, 2}, {0, 5, 3, 4, 2, 1}, {0, 5, 4, 1, 2, 3}, {0, 5, 4, 1, 3, 2}, {0, 5, 4, 2, 1, 3}, {0, 5, 4, 2, 3, 1}, {0, 5, 4, 3, 1, 2},
-			{0, 5, 4, 3, 2, 1}, {1, 0, 2, 3, 4, 5}, {1, 0, 2, 3, 5, 4}, {1, 0, 2, 4, 3, 5}, {1, 0, 2, 4, 5, 3}, {1, 0, 2, 5, 3, 4}, {1, 0, 2, 5, 4, 3}, {1, 0, 3, 2, 4, 5}, {1, 0, 3, 2, 5, 4}, {1, 0, 3, 4, 2, 5},
-			{1, 0, 3, 4, 5, 2}, {1, 0, 3, 5, 2, 4}, {1, 0, 3, 5, 4, 2}, {1, 0, 4, 2, 3, 5}, {1, 0, 4, 2, 5, 3}, {1, 0, 4, 3, 2, 5}, {1, 0, 4, 3, 5, 2}, {1, 0, 4, 5, 2, 3}, {1, 0, 4, 5, 3, 2}, {1, 0, 5, 2, 3, 4},
-			{1, 0, 5, 2, 4, 3}, {1, 0, 5, 3, 2, 4}, {1, 0, 5, 3, 4, 2}, {1, 0, 5, 4, 2, 3}, {1, 0, 5, 4, 3, 2}, {1, 2, 0, 3, 4, 5}, {1, 2, 0, 3, 5, 4}, {1, 2, 0, 4, 3, 5}, {1, 2, 0, 4, 5, 3}, {1, 2, 0, 5, 3, 4},
-			{1, 2, 0, 5, 4, 3}, {1, 2, 3, 0, 4, 5}, {1, 2, 3, 0, 5, 4}, {1, 2, 3, 4, 0, 5}, {1, 2, 3, 4, 5, 0}, {1, 2, 3, 5, 0, 4}, {1, 2, 3, 5, 4, 0}, {1, 2, 4, 0, 3, 5}, {1, 2, 4, 0, 5, 3}, {1, 2, 4, 3, 0, 5},
-			{1, 2, 4, 3, 5, 0}, {1, 2, 4, 5, 0, 3}, {1, 2, 4, 5, 3, 0}, {1, 2, 5, 0, 3, 4}, {1, 2, 5, 0, 4, 3}, {1, 2, 5, 3, 0, 4}, {1, 2, 5, 3, 4, 0}, {1, 2, 5, 4, 0, 3}, {1, 2, 5, 4, 3, 0}, {1, 3, 0, 2, 4, 5},
-			{1, 3, 0, 2, 5, 4}, {1, 3, 0, 4, 2, 5}, {1, 3, 0, 4, 5, 2}, {1, 3, 0, 5, 2, 4}, {1, 3, 0, 5, 4, 2}, {1, 3, 2, 0, 4, 5}, {1, 3, 2, 0, 5, 4}, {1, 3, 2, 4, 0, 5}, {1, 3, 2, 4, 5, 0}, {1, 3, 2, 5, 0, 4},
-			{1, 3, 2, 5, 4, 0}, {1, 3, 4, 0, 2, 5}, {1, 3, 4, 0, 5, 2}, {1, 3, 4, 2, 0, 5}, {1, 3, 4, 2, 5, 0}, {1, 3, 4, 5, 0, 2}, {1, 3, 4, 5, 2, 0}, {1, 3, 5, 0, 2, 4}, {1, 3, 5, 0, 4, 2}, {1, 3, 5, 2, 0, 4},
-			{1, 3, 5, 2, 4, 0}, {1, 3, 5, 4, 0, 2}, {1, 3, 5, 4, 2, 0}, {1, 4, 0, 2, 3, 5}, {1, 4, 0, 2, 5, 3}, {1, 4, 0, 3, 2, 5}, {1, 4, 0, 3, 5, 2}, {1, 4, 0, 5, 2, 3}, {1, 4, 0, 5, 3, 2}, {1, 4, 2, 0, 3, 5},
-			{1, 4, 2, 0, 5, 3}, {1, 4, 2, 3, 0, 5}, {1, 4, 2, 3, 5, 0}, {1, 4, 2, 5, 0, 3}, {1, 4, 2, 5, 3, 0}, {1, 4, 3, 0, 2, 5}, {1, 4, 3, 0, 5, 2}, {1, 4, 3, 2, 0, 5}, {1, 4, 3, 2, 5, 0}, {1, 4, 3, 5, 0, 2},
-			{1, 4, 3, 5, 2, 0}, {1, 4, 5, 0, 2, 3}, {1, 4, 5, 0, 3, 2}, {1, 4, 5, 2, 0, 3}, {1, 4, 5, 2, 3, 0}, {1, 4, 5, 3, 0, 2}, {1, 4, 5, 3, 2, 0}, {1, 5, 0, 2, 3, 4}, {1, 5, 0, 2, 4, 3}, {1, 5, 0, 3, 2, 4},
-			{1, 5, 0, 3, 4, 2}, {1, 5, 0, 4, 2, 3}, {1, 5, 0, 4, 3, 2}, {1, 5, 2, 0, 3, 4}, {1, 5, 2, 0, 4, 3}, {1, 5, 2, 3, 0, 4}, {1, 5, 2, 3, 4, 0}, {1, 5, 2, 4, 0, 3}, {1, 5, 2, 4, 3, 0}, {1, 5, 3, 0, 2, 4},
-			{1, 5, 3, 0, 4, 2}, {1, 5, 3, 2, 0, 4}, {1, 5, 3, 2, 4, 0}, {1, 5, 3, 4, 0, 2}, {1, 5, 3, 4, 2, 0}, {1, 5, 4, 0, 2, 3}, {1, 5, 4, 0, 3, 2}, {1, 5, 4, 2, 0, 3}, {1, 5, 4, 2, 3, 0}, {1, 5, 4, 3, 0, 2},
-			{1, 5, 4, 3, 2, 0}, {2, 0, 1, 3, 4, 5}, {2, 0, 1, 3, 5, 4}, {2, 0, 1, 4, 3, 5}, {2, 0, 1, 4, 5, 3}, {2, 0, 1, 5, 3, 4}, {2, 0, 1, 5, 4, 3}, {2, 0, 3, 1, 4, 5}, {2, 0, 3, 1, 5, 4}, {2, 0, 3, 4, 1, 5},
-			{2, 0, 3, 4, 5, 1}, {2, 0, 3, 5, 1, 4}, {2, 0, 3, 5, 4, 1}, {2, 0, 4, 1, 3, 5}, {2, 0, 4, 1, 5, 3}, {2, 0, 4, 3, 1, 5}, {2, 0, 4, 3, 5, 1}, {2, 0, 4, 5, 1, 3}, {2, 0, 4, 5, 3, 1}, {2, 0, 5, 1, 3, 4},
-			{2, 0, 5, 1, 4, 3}, {2, 0, 5, 3, 1, 4}, {2, 0, 5, 3, 4, 1}, {2, 0, 5, 4, 1, 3}, {2, 0, 5, 4, 3, 1}, {2, 1, 0, 3, 4, 5}, {2, 1, 0, 3, 5, 4}, {2, 1, 0, 4, 3, 5}, {2, 1, 0, 4, 5, 3}, {2, 1, 0, 5, 3, 4},
-			{2, 1, 0, 5, 4, 3}, {2, 1, 3, 0, 4, 5}, {2, 1, 3, 0, 5, 4}, {2, 1, 3, 4, 0, 5}, {2, 1, 3, 4, 5, 0}, {2, 1, 3, 5, 0, 4}, {2, 1, 3, 5, 4, 0}, {2, 1, 4, 0, 3, 5}, {2, 1, 4, 0, 5, 3}, {2, 1, 4, 3, 0, 5},
-			{2, 1, 4, 3, 5, 0}, {2, 1, 4, 5, 0, 3}, {2, 1, 4, 5, 3, 0}, {2, 1, 5, 0, 3, 4}, {2, 1, 5, 0, 4, 3}, {2, 1, 5, 3, 0, 4}, {2, 1, 5, 3, 4, 0}, {2, 1, 5, 4, 0, 3}, {2, 1, 5, 4, 3, 0}, {2, 3, 0, 1, 4, 5},
-			{2, 3, 0, 1, 5, 4}, {2, 3, 0, 4, 1, 5}, {2, 3, 0, 4, 5, 1}, {2, 3, 0, 5, 1, 4}, {2, 3, 0, 5, 4, 1}, {2, 3, 1, 0, 4, 5}, {2, 3, 1, 0, 5, 4}, {2, 3, 1, 4, 0, 5}, {2, 3, 1, 4, 5, 0}, {2, 3, 1, 5, 0, 4},
-			{2, 3, 1, 5, 4, 0}, {2, 3, 4, 0, 1, 5}, {2, 3, 4, 0, 5, 1}, {2, 3, 4, 1, 0, 5}, {2, 3, 4, 1, 5, 0}, {2, 3, 4, 5, 0, 1}, {2, 3, 4, 5, 1, 0}, {2, 3, 5, 0, 1, 4}, {2, 3, 5, 0, 4, 1}, {2, 3, 5, 1, 0, 4},
-			{2, 3, 5, 1, 4, 0}, {2, 3, 5, 4, 0, 1}, {2, 3, 5, 4, 1, 0}, {2, 4, 0, 1, 3, 5}, {2, 4, 0, 1, 5, 3}, {2, 4, 0, 3, 1, 5}, {2, 4, 0, 3, 5, 1}, {2, 4, 0, 5, 1, 3}, {2, 4, 0, 5, 3, 1}, {2, 4, 1, 0, 3, 5},
-			{2, 4, 1, 0, 5, 3}, {2, 4, 1, 3, 0, 5}, {2, 4, 1, 3, 5, 0}, {2, 4, 1, 5, 0, 3}, {2, 4, 1, 5, 3, 0}, {2, 4, 3, 0, 1, 5}, {2, 4, 3, 0, 5, 1}, {2, 4, 3, 1, 0, 5}, {2, 4, 3, 1, 5, 0}, {2, 4, 3, 5, 0, 1},
-			{2, 4, 3, 5, 1, 0}, {2, 4, 5, 0, 1, 3}, {2, 4, 5, 0, 3, 1}, {2, 4, 5, 1, 0, 3}, {2, 4, 5, 1, 3, 0}, {2, 4, 5, 3, 0, 1}, {2, 4, 5, 3, 1, 0}, {2, 5, 0, 1, 3, 4}, {2, 5, 0, 1, 4, 3}, {2, 5, 0, 3, 1, 4},
-			{2, 5, 0, 3, 4, 1}, {2, 5, 0, 4, 1, 3}, {2, 5, 0, 4, 3, 1}, {2, 5, 1, 0, 3, 4}, {2, 5, 1, 0, 4, 3}, {2, 5, 1, 3, 0, 4}, {2, 5, 1, 3, 4, 0}, {2, 5, 1, 4, 0, 3}, {2, 5, 1, 4, 3, 0}, {2, 5, 3, 0, 1, 4},
-			{2, 5, 3, 0, 4, 1}, {2, 5, 3, 1, 0, 4}, {2, 5, 3, 1, 4, 0}, {2, 5, 3, 4, 0, 1}, {2, 5, 3, 4, 1, 0}, {2, 5, 4, 0, 1, 3}, {2, 5, 4, 0, 3, 1}, {2, 5, 4, 1, 0, 3}, {2, 5, 4, 1, 3, 0}, {2, 5, 4, 3, 0, 1},
-			{2, 5, 4, 3, 1, 0}, {3, 0, 1, 2, 4, 5}, {3, 0, 1, 2, 5, 4}, {3, 0, 1, 4, 2, 5}, {3, 0, 1, 4, 5, 2}, {3, 0, 1, 5, 2, 4}, {3, 0, 1, 5, 4, 2}, {3, 0, 2, 1, 4, 5}, {3, 0, 2, 1, 5, 4}, {3, 0, 2, 4, 1, 5},
-			{3, 0, 2, 4, 5, 1}, {3, 0, 2, 5, 1, 4}, {3, 0, 2, 5, 4, 1}, {3, 0, 4, 1, 2, 5}, {3, 0, 4, 1, 5, 2}, {3, 0, 4, 2, 1, 5}, {3, 0, 4, 2, 5, 1}, {3, 0, 4, 5, 1, 2}, {3, 0, 4, 5, 2, 1}, {3, 0, 5, 1, 2, 4},
-			{3, 0, 5, 1, 4, 2}, {3, 0, 5, 2, 1, 4}, {3, 0, 5, 2, 4, 1}, {3, 0, 5, 4, 1, 2}, {3, 0, 5, 4, 2, 1}, {3, 1, 0, 2, 4, 5}, {3, 1, 0, 2, 5, 4}, {3, 1, 0, 4, 2, 5}, {3, 1, 0, 4, 5, 2}, {3, 1, 0, 5, 2, 4},
-			{3, 1, 0, 5, 4, 2}, {3, 1, 2, 0, 4, 5}, {3, 1, 2, 0, 5, 4}, {3, 1, 2, 4, 0, 5}, {3, 1, 2, 4, 5, 0}, {3, 1, 2, 5, 0, 4}, {3, 1, 2, 5, 4, 0}, {3, 1, 4, 0, 2, 5}, {3, 1, 4, 0, 5, 2}, {3, 1, 4, 2, 0, 5},
-			{3, 1, 4, 2, 5, 0}, {3, 1, 4, 5, 0, 2}, {3, 1, 4, 5, 2, 0}, {3, 1, 5, 0, 2, 4}, {3, 1, 5, 0, 4, 2}, {3, 1, 5, 2, 0, 4}, {3, 1, 5, 2, 4, 0}, {3, 1, 5, 4, 0, 2}, {3, 1, 5, 4, 2, 0}, {3, 2, 0, 1, 4, 5},
-			{3, 2, 0, 1, 5, 4}, {3, 2, 0, 4, 1, 5}, {3, 2, 0, 4, 5, 1}, {3, 2, 0, 5, 1, 4}, {3, 2, 0, 5, 4, 1}, {3, 2, 1, 0, 4, 5}, {3, 2, 1, 0, 5, 4}, {3, 2, 1, 4, 0, 5}, {3, 2, 1, 4, 5, 0}, {3, 2, 1, 5, 0, 4},
-			{3, 2, 1, 5, 4, 0}, {3, 2, 4, 0, 1, 5}, {3, 2, 4, 0, 5, 1}, {3, 2, 4, 1, 0, 5}, {3, 2, 4, 1, 5, 0}, {3, 2, 4, 5, 0, 1}, {3, 2, 4, 5, 1, 0}, {3, 2, 5, 0, 1, 4}, {3, 2, 5, 0, 4, 1}, {3, 2, 5, 1, 0, 4},
-			{3, 2, 5, 1, 4, 0}, {3, 2, 5, 4, 0, 1}, {3, 2, 5, 4, 1, 0}, {3, 4, 0, 1, 2, 5}, {3, 4, 0, 1, 5, 2}, {3, 4, 0, 2, 1, 5}, {3, 4, 0, 2, 5, 1}, {3, 4, 0, 5, 1, 2}, {3, 4, 0, 5, 2, 1}, {3, 4, 1, 0, 2, 5},
-			{3, 4, 1, 0, 5, 2}, {3, 4, 1, 2, 0, 5}, {3, 4, 1, 2, 5, 0}, {3, 4, 1, 5, 0, 2}, {3, 4, 1, 5, 2, 0}, {3, 4, 2, 0, 1, 5}, {3, 4, 2, 0, 5, 1}, {3, 4, 2, 1, 0, 5}, {3, 4, 2, 1, 5, 0}, {3, 4, 2, 5, 0, 1},
-			{3, 4, 2, 5, 1, 0}, {3, 4, 5, 0, 1, 2}, {3, 4, 5, 0, 2, 1}, {3, 4, 5, 1, 0, 2}, {3, 4, 5, 1, 2, 0}, {3, 4, 5, 2, 0, 1}, {3, 4, 5, 2, 1, 0}, {3, 5, 0, 1, 2, 4}, {3, 5, 0, 1, 4, 2}, {3, 5, 0, 2, 1, 4},
-			{3, 5, 0, 2, 4, 1}, {3, 5, 0, 4, 1, 2}, {3, 5, 0, 4, 2, 1}, {3, 5, 1, 0, 2, 4}, {3, 5, 1, 0, 4, 2}, {3, 5, 1, 2, 0, 4}, {3, 5, 1, 2, 4, 0}, {3, 5, 1, 4, 0, 2}, {3, 5, 1, 4, 2, 0}, {3, 5, 2, 0, 1, 4},
-			{3, 5, 2, 0, 4, 1}, {3, 5, 2, 1, 0, 4}, {3, 5, 2, 1, 4, 0}, {3, 5, 2, 4, 0, 1}, {3, 5, 2, 4, 1, 0}, {3, 5, 4, 0, 1, 2}, {3, 5, 4, 0, 2, 1}, {3, 5, 4, 1, 0, 2}, {3, 5, 4, 1, 2, 0}, {3, 5, 4, 2, 0, 1},
-			{3, 5, 4, 2, 1, 0}, {4, 0, 1, 2, 3, 5}, {4, 0, 1, 2, 5, 3}, {4, 0, 1, 3, 2, 5}, {4, 0, 1, 3, 5, 2}, {4, 0, 1, 5, 2, 3}, {4, 0, 1, 5, 3, 2}, {4, 0, 2, 1, 3, 5}, {4, 0, 2, 1, 5, 3}, {4, 0, 2, 3, 1, 5},
-			{4, 0, 2, 3, 5, 1}, {4, 0, 2, 5, 1, 3}, {4, 0, 2, 5, 3, 1}, {4, 0, 3, 1, 2, 5}, {4, 0, 3, 1, 5, 2}, {4, 0, 3, 2, 1, 5}, {4, 0, 3, 2, 5, 1}, {4, 0, 3, 5, 1, 2}, {4, 0, 3, 5, 2, 1}, {4, 0, 5, 1, 2, 3},
-			{4, 0, 5, 1, 3, 2}, {4, 0, 5, 2, 1, 3}, {4, 0, 5, 2, 3, 1}, {4, 0, 5, 3, 1, 2}, {4, 0, 5, 3, 2, 1}, {4, 1, 0, 2, 3, 5}, {4, 1, 0, 2, 5, 3}, {4, 1, 0, 3, 2, 5}, {4, 1, 0, 3, 5, 2}, {4, 1, 0, 5, 2, 3},
-			{4, 1, 0, 5, 3, 2}, {4, 1, 2, 0, 3, 5}, {4, 1, 2, 0, 5, 3}, {4, 1, 2, 3, 0, 5}, {4, 1, 2, 3, 5, 0}, {4, 1, 2, 5, 0, 3}, {4, 1, 2, 5, 3, 0}, {4, 1, 3, 0, 2, 5}, {4, 1, 3, 0, 5, 2}, {4, 1, 3, 2, 0, 5},
-			{4, 1, 3, 2, 5, 0}, {4, 1, 3, 5, 0, 2}, {4, 1, 3, 5, 2, 0}, {4, 1, 5, 0, 2, 3}, {4, 1, 5, 0, 3, 2}, {4, 1, 5, 2, 0, 3}, {4, 1, 5, 2, 3, 0}, {4, 1, 5, 3, 0, 2}, {4, 1, 5, 3, 2, 0}, {4, 2, 0, 1, 3, 5},
-			{4, 2, 0, 1, 5, 3}, {4, 2, 0, 3, 1, 5}, {4, 2, 0, 3, 5, 1}, {4, 2, 0, 5, 1, 3}, {4, 2, 0, 5, 3, 1}, {4, 2, 1, 0, 3, 5}, {4, 2, 1, 0, 5, 3}, {4, 2, 1, 3, 0, 5}, {4, 2, 1, 3, 5, 0}, {4, 2, 1, 5, 0, 3},
-			{4, 2, 1, 5, 3, 0}, {4, 2, 3, 0, 1, 5}, {4, 2, 3, 0, 5, 1}, {4, 2, 3, 1, 0, 5}, {4, 2, 3, 1, 5, 0}, {4, 2, 3, 5, 0, 1}, {4, 2, 3, 5, 1, 0}, {4, 2, 5, 0, 1, 3}, {4, 2, 5, 0, 3, 1}, {4, 2, 5, 1, 0, 3},
-			{4, 2, 5, 1, 3, 0}, {4, 2, 5, 3, 0, 1}, {4, 2, 5, 3, 1, 0}, {4, 3, 0, 1, 2, 5}, {4, 3, 0, 1, 5, 2}, {4, 3, 0, 2, 1, 5}, {4, 3, 0, 2, 5, 1}, {4, 3, 0, 5, 1, 2}, {4, 3, 0, 5, 2, 1}, {4, 3, 1, 0, 2, 5},
-			{4, 3, 1, 0, 5, 2}, {4, 3, 1, 2, 0, 5}, {4, 3, 1, 2, 5, 0}, {4, 3, 1, 5, 0, 2}, {4, 3, 1, 5, 2, 0}, {4, 3, 2, 0, 1, 5}, {4, 3, 2, 0, 5, 1}, {4, 3, 2, 1, 0, 5}, {4, 3, 2, 1, 5, 0}, {4, 3, 2, 5, 0, 1},
-			{4, 3, 2, 5, 1, 0}, {4, 3, 5, 0, 1, 2}, {4, 3, 5, 0, 2, 1}, {4, 3, 5, 1, 0, 2}, {4, 3, 5, 1, 2, 0}, {4, 3, 5, 2, 0, 1}, {4, 3, 5, 2, 1, 0}, {4, 5, 0, 1, 2, 3}, {4, 5, 0, 1, 3, 2}, {4, 5, 0, 2, 1, 3},
-			{4, 5, 0, 2, 3, 1}, {4, 5, 0, 3, 1, 2}, {4, 5, 0, 3, 2, 1}, {4, 5, 1, 0, 2, 3}, {4, 5, 1, 0, 3, 2}, {4, 5, 1, 2, 0, 3}, {4, 5, 1, 2, 3, 0}, {4, 5, 1, 3, 0, 2}, {4, 5, 1, 3, 2, 0}, {4, 5, 2, 0, 1, 3},
-			{4, 5, 2, 0, 3, 1}, {4, 5, 2, 1, 0, 3}, {4, 5, 2, 1, 3, 0}, {4, 5, 2, 3, 0, 1}, {4, 5, 2, 3, 1, 0}, {4, 5, 3, 0, 1, 2}, {4, 5, 3, 0, 2, 1}, {4, 5, 3, 1, 0, 2}, {4, 5, 3, 1, 2, 0}, {4, 5, 3, 2, 0, 1},
-			{4, 5, 3, 2, 1, 0}, {5, 0, 1, 2, 3, 4}, {5, 0, 1, 2, 4, 3}, {5, 0, 1, 3, 2, 4}, {5, 0, 1, 3, 4, 2}, {5, 0, 1, 4, 2, 3}, {5, 0, 1, 4, 3, 2}, {5, 0, 2, 1, 3, 4}, {5, 0, 2, 1, 4, 3}, {5, 0, 2, 3, 1, 4},
-			{5, 0, 2, 3, 4, 1}, {5, 0, 2, 4, 1, 3}, {5, 0, 2, 4, 3, 1}, {5, 0, 3, 1, 2, 4}, {5, 0, 3, 1, 4, 2}, {5, 0, 3, 2, 1, 4}, {5, 0, 3, 2, 4, 1}, {5, 0, 3, 4, 1, 2}, {5, 0, 3, 4, 2, 1}, {5, 0, 4, 1, 2, 3},
-			{5, 0, 4, 1, 3, 2}, {5, 0, 4, 2, 1, 3}, {5, 0, 4, 2, 3, 1}, {5, 0, 4, 3, 1, 2}, {5, 0, 4, 3, 2, 1}, {5, 1, 0, 2, 3, 4}, {5, 1, 0, 2, 4, 3}, {5, 1, 0, 3, 2, 4}, {5, 1, 0, 3, 4, 2}, {5, 1, 0, 4, 2, 3},
-			{5, 1, 0, 4, 3, 2}, {5, 1, 2, 0, 3, 4}, {5, 1, 2, 0, 4, 3}, {5, 1, 2, 3, 0, 4}, {5, 1, 2, 3, 4, 0}, {5, 1, 2, 4, 0, 3}, {5, 1, 2, 4, 3, 0}, {5, 1, 3, 0, 2, 4}, {5, 1, 3, 0, 4, 2}, {5, 1, 3, 2, 0, 4},
-			{5, 1, 3, 2, 4, 0}, {5, 1, 3, 4, 0, 2}, {5, 1, 3, 4, 2, 0}, {5, 1, 4, 0, 2, 3}, {5, 1, 4, 0, 3, 2}, {5, 1, 4, 2, 0, 3}, {5, 1, 4, 2, 3, 0}, {5, 1, 4, 3, 0, 2}, {5, 1, 4, 3, 2, 0}, {5, 2, 0, 1, 3, 4},
-			{5, 2, 0, 1, 4, 3}, {5, 2, 0, 3, 1, 4}, {5, 2, 0, 3, 4, 1}, {5, 2, 0, 4, 1, 3}, {5, 2, 0, 4, 3, 1}, {5, 2, 1, 0, 3, 4}, {5, 2, 1, 0, 4, 3}, {5, 2, 1, 3, 0, 4}, {5, 2, 1, 3, 4, 0}, {5, 2, 1, 4, 0, 3},
-			{5, 2, 1, 4, 3, 0}, {5, 2, 3, 0, 1, 4}, {5, 2, 3, 0, 4, 1}, {5, 2, 3, 1, 0, 4}, {5, 2, 3, 1, 4, 0}, {5, 2, 3, 4, 0, 1}, {5, 2, 3, 4, 1, 0}, {5, 2, 4, 0, 1, 3}, {5, 2, 4, 0, 3, 1}, {5, 2, 4, 1, 0, 3},
-			{5, 2, 4, 1, 3, 0}, {5, 2, 4, 3, 0, 1}, {5, 2, 4, 3, 1, 0}, {5, 3, 0, 1, 2, 4}, {5, 3, 0, 1, 4, 2}, {5, 3, 0, 2, 1, 4}, {5, 3, 0, 2, 4, 1}, {5, 3, 0, 4, 1, 2}, {5, 3, 0, 4, 2, 1}, {5, 3, 1, 0, 2, 4},
-			{5, 3, 1, 0, 4, 2}, {5, 3, 1, 2, 0, 4}, {5, 3, 1, 2, 4, 0}, {5, 3, 1, 4, 0, 2}, {5, 3, 1, 4, 2, 0}, {5, 3, 2, 0, 1, 4}, {5, 3, 2, 0, 4, 1}, {5, 3, 2, 1, 0, 4}, {5, 3, 2, 1, 4, 0}, {5, 3, 2, 4, 0, 1},
-			{5, 3, 2, 4, 1, 0}, {5, 3, 4, 0, 1, 2}, {5, 3, 4, 0, 2, 1}, {5, 3, 4, 1, 0, 2}, {5, 3, 4, 1, 2, 0}, {5, 3, 4, 2, 0, 1}, {5, 3, 4, 2, 1, 0}, {5, 4, 0, 1, 2, 3}, {5, 4, 0, 1, 3, 2}, {5, 4, 0, 2, 1, 3},
-			{5, 4, 0, 2, 3, 1}, {5, 4, 0, 3, 1, 2}, {5, 4, 0, 3, 2, 1}, {5, 4, 1, 0, 2, 3}, {5, 4, 1, 0, 3, 2}, {5, 4, 1, 2, 0, 3}, {5, 4, 1, 2, 3, 0}, {5, 4, 1, 3, 0, 2}, {5, 4, 1, 3, 2, 0}, {5, 4, 2, 0, 1, 3},
-			{5, 4, 2, 0, 3, 1}, {5, 4, 2, 1, 0, 3}, {5, 4, 2, 1, 3, 0}, {5, 4, 2, 3, 0, 1}, {5, 4, 2, 3, 1, 0}, {5, 4, 3, 0, 1, 2}, {5, 4, 3, 0, 2, 1}, {5, 4, 3, 1, 0, 2}, {5, 4, 3, 1, 2, 0}, {5, 4, 3, 2, 0, 1},
-			{5, 4, 3, 2, 1, 0}}
-	}
-
-	if n == 7 {
-		for i := 0; i < n; i++ {
-			for j := 0; j < n; j++ {
-				if i == j {
-					continue
-				}
-				for k := 0; k < n; k++ {
-					if k == i || k == j {
-						continue
-					}
-
-					for l := 0; l < n; l++ {
-						if l == i || l == j || l == k {
-							continue
-						}
-						for m := 0; m < n; m++ {
-							if m == i || m == j || m == k || m == l {
-								continue
-							}
-							for u := 0; u < n; u++ {
-								if u == i || u == j || u == k || u == l || u == m {
-									continue
-								}
-								for p := 0; p < n; p++ {
-									if p == i || p == j || p == k || p == l || p == m || p == u {
-										continue
-									}
-									res = append(res, []int{i, j, k, l, m, u, p})
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	if n == 8 {
-		for i := 0; i < n; i++ {
-			for j := 0; j < n; j++ {
-				if i == j {
-					continue
-				}
-				for k := 0; k < n; k++ {
-					if k == i || k == j {
-						continue
-					}
-
-					for l := 0; l < n; l++ {
-						if l == i || l == j || l == k {
-							continue
-						}
-						for m := 0; m < n; m++ {
-							if m == i || m == j || m == k || m == l {
-								continue
-							}
-							for u := 0; u < n; u++ {
-								if u == i || u == j || u == k || u == l || u == m {
-									continue
-								}
-								for p := 0; p < n; p++ {
-									if p == i || p == j || p == k || p == l || p == m || p == u {
-										continue
-									}
-									for v := 0; v < n; v++ {
-										if v == i || v == j || v == k || v == l || v == m || v == u || v == p {
-											continue
-										}
-										res = append(res, []int{i, j, k, l, m, u, p, v})
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	if n == 9 {
-		for i := 0; i < n; i++ {
-			for j := 0; j < n; j++ {
-				if i == j {
-					continue
-				}
-				for k := 0; k < n; k++ {
-					if k == i || k == j {
-						continue
-					}
-
-					for l := 0; l < n; l++ {
-						if l == i || l == j || l == k {
-							continue
-						}
-						for m := 0; m < n; m++ {
-							if m == i || m == j || m == k || m == l {
-								continue
-							}
-							for u := 0; u < n; u++ {
-								if u == i || u == j || u == k || u == l || u == m {
-									continue
-								}
-								for p := 0; p < n; p++ {
-									if p == i || p == j || p == k || p == l || p == m || p == u {
-										continue
-									}
-									for v := 0; v < n; v++ {
-										if v == i || v == j || v == k || v == l || v == m || v == u || v == p {
-											continue
-										}
-										for w := 0; w < n; w++ {
-											if w == i || w == j || w == k || w == l || w == m || w == u || w == p || w == v {
-												continue
-											}
-											res = append(res, []int{i, j, k, l, m, u, p, v, w})
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	return res
-}
-
-func factorial(n int) int {
-	if n == 1 {
-		return 1
-	}
-	return n * factorial(n-1)
-}
-
-func pr(dds [][]int) string {
-	res := "{"
-	for j, dd := range dds {
-		s := "{"
-		for i, d := range dd {
-			if i != len(dd)-1 {
-				s += fmt.Sprintf("%d,", d)
-				continue
-			}
-			if j != len(dds)-1 {
-				s += fmt.Sprintf("%d},", d)
-				continue
-			}
-			s += fmt.Sprintf("%d}", d)
-		}
-		res += s
-	}
-	res += "}"
-	return res
-}
-
-//
-//for i := 0; i < n; i++ {
-//	for j := 0; j < n; j++ {
-//		if i == j {
-//			continue
-//		}
-//		for k := 0; k < n; k++ {
-//			if k == i || k == j {
-//				continue
-//			}
-//
-//			for l := 0; l < n; l++ {
-//				if l == i || l == j || l == k {
-//					continue
-//				}
-//				for m := 0; m < n; m++ {
-//					if m == i || m == j || m == k || m == l {
-//						continue
-//					}
-//					res = append(res, []int{i, j, k, l, m})
-//				}
-//			}
-//		}
-//	}
-//}
