@@ -9,7 +9,7 @@ import "fmt"
 
 func main() {
 	//a, t := "лилилось лилилась", "лилила"
-	a, t := "test", "s"
+	a, t := "test", "st"
 
 	idx, ok := searchSubstringKMP(a, t)
 	if ok {
@@ -23,7 +23,7 @@ func main() {
 // searchSubstringKMP - поиск подстроки в строке - Алгоритм Кнута-Морриса-Пратта (КМП-алгоритм) - Сложность O(m+n)
 func searchSubstringKMP(a, t string) (int, bool) {
 	m := len(t)
-	if m == 0 {
+	if m == 0 || m > len(a) {
 		return 0, false
 	}
 
