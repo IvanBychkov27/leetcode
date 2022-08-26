@@ -15,6 +15,8 @@ import (
 	"time"
 )
 
+//var count int64
+
 func main() {
 	a := setData(20)
 	fmt.Println(a)
@@ -24,6 +26,7 @@ func main() {
 	fmt.Println(time.Now().Sub(timeStart))
 	_ = sortA
 	fmt.Println(sortA)
+	//fmt.Println("count:", count)
 }
 
 // sortingBubble - сортировка пузырьком
@@ -35,6 +38,7 @@ func sortingBubble(a []int) []int {
 
 	for i := 0; i < n-1; i++ {
 		for j := 0; j < n-1-i; j++ {
+			//atomic.AddInt64(&count, 1)
 			if a[j] > a[j+1] {
 				a[j], a[j+1] = a[j+1], a[j]
 			}
