@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/stretchr/testify/assert"
+	"sort"
 	"testing"
 )
 
@@ -93,5 +94,21 @@ func Benchmark_quickSortV4_rand(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		quickSortV4(a, false)
+	}
+}
+
+func Benchmark_go_sort(b *testing.B) {
+	a := setData(30000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		sort.Ints(a)
+	}
+}
+
+func Benchmark_go_sort_rand(b *testing.B) {
+	a := setDataRandom(30000)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		sort.Ints(a)
 	}
 }

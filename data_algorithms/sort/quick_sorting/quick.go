@@ -1,4 +1,5 @@
-/*
+/* см: https://habr.com/ru/post/335920/
+
 	Быстрая сортировка
 
 	Сложность алгоритма: худшее время - квадратичное O(n2); лучшее - линейно-логарифмическое время O(n log n)
@@ -24,6 +25,7 @@ func main() {
 	var sortA []int
 
 	dataDisplay := false
+	//dataDisplay := true
 
 	a := setData(30000)
 	//a := setDataRandom(30000)
@@ -39,9 +41,20 @@ func main() {
 		fmt.Println()
 	}
 
+	a1 := make([]int, 0, len(a))
+	a2 := make([]int, 0, len(a))
+	a3 := make([]int, 0, len(a))
+	a4 := make([]int, 0, len(a))
+	for _, d := range a {
+		a1 = append(a1, d)
+		a2 = append(a2, d)
+		a3 = append(a3, d)
+		a4 = append(a4, d)
+	}
+
 	fmt.Printf("Version 1: len = %d time = ", len(a))
 	timeStart = time.Now()
-	sortA = quickSortV1(a)
+	sortA = quickSortV1(a1)
 	fmt.Println(time.Now().Sub(timeStart))
 	_ = sortA
 	if dataDisplay {
@@ -52,7 +65,7 @@ func main() {
 	fmt.Printf("\nVersion 2: len = %d time = ", len(a))
 	count = 0
 	timeStart = time.Now()
-	sortA = quickSortV2(a)
+	sortA = quickSortV2(a2)
 	fmt.Println(time.Now().Sub(timeStart))
 	_ = sortA
 	if dataDisplay {
@@ -63,7 +76,7 @@ func main() {
 	fmt.Printf("\nVersion 3: len = %d time = ", len(a))
 	count = 0
 	timeStart = time.Now()
-	sortA = quickSortV3(a)
+	sortA = quickSortV3(a3)
 	fmt.Println(time.Now().Sub(timeStart))
 	_ = sortA
 	if dataDisplay {
@@ -80,7 +93,7 @@ func main() {
 	fmt.Printf("\nVersion 4: len = %d time = ", len(a))
 	count = 0
 	timeStart = time.Now()
-	sortA = quickSortV4(a, false)
+	sortA = quickSortV4(a4, false)
 	fmt.Println(time.Now().Sub(timeStart))
 	_ = sortA
 	if dataDisplay {
@@ -110,7 +123,7 @@ func quickSortV1(data []int) []int {
 	bigger := make([]int, 0, n)
 	d := data[0] // рекомендация: данный элемент лучше выбирать не первым, а произвольным (например: d := data[idx], где idx = len(data)/2) - это чаще всего ускоряет работу функции
 	for _, v := range data[1:] {
-		//count++
+		count++
 		if v > d {
 			bigger = append(bigger, v) // рекомендация: для экономии памяти необходимо менять местами эл-ты в том же массиве, а не создавать новые массивы рекурсивно
 		} else {
@@ -137,7 +150,7 @@ func quickSortV2(data []int) []int {
 	idx := n / 2
 	d := data[idx]
 	for i, v := range data {
-		//count++
+		count++
 		if i == idx {
 			continue
 		}
@@ -153,10 +166,10 @@ func quickSortV2(data []int) []int {
 }
 
 // быстрая сортировка версия 3
-// Benchmark_quickSortV3-8        	  80653	     14741 ns/op	       0 B/op	       0 allocs/op (тест проводился на 30 000 элементах отсортированных в обратном порядке)
-// Version 3: len = 30000 time = 135.92µs
+// Benchmark_quickSortV3-8        	  116841	      9573 ns/op	       0 B/op	       0 allocs/op (тест проводился на 30 000 элементах отсортированных в обратном порядке)
+// Version 3: len = 30000 time = 126µs
 // count: 154678
-// O(N*LogN)
+// O(N*LogN) !!!
 func quickSortV3(a []int) []int {
 	n := len(a)
 	if n < 2 {
@@ -164,19 +177,14 @@ func quickSortV3(a []int) []int {
 	}
 
 	isSort := true
-	isReplay := true
-
 	for i := 1; i < n; i++ {
-		//count++
-		if a[i-1] != a[i] {
-			isReplay = false
-		}
+		count++
 		if a[i-1] > a[i] {
 			isSort = false
 			break
 		}
 	}
-	if isReplay || isSort {
+	if isSort {
 		return a
 	}
 
@@ -188,7 +196,7 @@ func quickSortV3(a []int) []int {
 	j := n - 1
 
 	for i < j {
-		//count++
+		count++
 
 		if i == idx {
 			if a[j] <= d {
@@ -221,9 +229,9 @@ func quickSortV3(a []int) []int {
 
 // быстрая сортировка версия 4
 // Benchmark_quickSortV4-8        	  81295	     14728 ns/op	       0 B/op	       0 allocs/op (тест проводился на 30 000 элементах отсортированных в обратном порядке)
-// Version 4: len = 30000 time = 17.063µs
-// count: 29999
-// O(N-1)
+// Version 4: len = 30000 time = 16µs
+// count:  59998
+// O(2*N) !!!
 func quickSortV4(a []int, random bool) []int {
 	n := len(a)
 	if n < 2 {
@@ -231,19 +239,14 @@ func quickSortV4(a []int, random bool) []int {
 	}
 
 	isSort := true
-	isReplay := true
-
 	for i := 1; i < n; i++ {
-		//count++
-		if a[i-1] != a[i] {
-			isReplay = false
-		}
+		count++
 		if a[i-1] > a[i] {
 			isSort = false
 			break
 		}
 	}
-	if isReplay || isSort {
+	if isSort {
 		return a
 	}
 
@@ -257,12 +260,7 @@ func quickSortV4(a []int, random bool) []int {
 	j := n - 1
 
 	for i < j {
-		//count++
-		//if count > 1000000 {
-		//	fmt.Println("count > 1 000 000")
-		//	break
-		//}
-
+		count++
 		if i == idx {
 			if a[j] <= d {
 				a[i], a[j] = a[j], a[i]
