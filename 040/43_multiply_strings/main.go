@@ -26,9 +26,9 @@ package main
 import "fmt"
 
 func main() {
-	num1, num2 := "0", "0"
+	//num1, num2 := "0", "0"
 	//num1, num2 := "2", "3"
-	//num1, num2 := "123", "456"
+	num1, num2 := "123", "456"
 	res := multiply(num1, num2)
 	fmt.Println(res)
 }
@@ -56,7 +56,6 @@ func multiply(num1 string, num2 string) string {
 			}
 		}
 	}
-	fmt.Println("res =", res)
 	return printRes(res)
 }
 
