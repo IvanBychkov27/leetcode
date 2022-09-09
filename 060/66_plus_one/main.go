@@ -30,7 +30,7 @@ import "fmt"
 func main() {
 	//digits := []int{1, 2, 3}
 	//digits := []int{9}
-	digits := []int{9, 8, 9, 8}
+	digits := []int{9, 9, 9, 9}
 	fmt.Println("digits =", digits)
 	res := plusOne(digits)
 	fmt.Println("res    =", res)
