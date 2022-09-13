@@ -19,6 +19,13 @@ func main() {
 
 	fmt.Println(dd)
 
+	fmt.Println()
+	fmt.Println("factorialOK =", factorialOK(5))
+
+	fmt.Println()
+	n := 3
+	comb := make([]int, n)
+	generateBinaryNumber(comb, n, 0)
 }
 
 // перестановки сохраняем в массив
@@ -53,9 +60,40 @@ func permutations(d []int, n int) {
 	}
 }
 
+// факториал через рекурсию считать неправильно!!! (можно переполнить стек памяти, при больших числах)
 func factorial(n int) int {
 	if n == 1 {
 		return 1
 	}
 	return n * factorial(n-1)
+}
+
+// рачсет факториала в цикле
+func factorialOK(n int) int {
+	f := 1
+	if n == 0 {
+		return f
+	}
+	for i := 1; i < n+1; i++ {
+		f *= i
+	}
+	return f
+}
+
+// генерация всех вариантов двоичного числа длиной n
+func generateBinaryNumber(comb []int, n, idx int) {
+	if n == 0 {
+		fmt.Println(comb)
+		return
+	}
+
+	comb[idx] = 0
+	idx++
+	generateBinaryNumber(comb, n-1, idx)
+	idx--
+
+	comb[idx] = 1
+	idx++
+	generateBinaryNumber(comb, n-1, idx)
+	idx--
 }
