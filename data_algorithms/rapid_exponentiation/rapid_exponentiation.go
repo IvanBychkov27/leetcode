@@ -13,9 +13,11 @@ import (
 
 func main() {
 	a, n := 2, 62
+	//a, n := 2, 10
 	fmt.Println("rapid  =", rapidExponentiation(a, n))
 	fmt.Println("rapid2 =", rapidExponentiation2(a, n))
 	fmt.Println("pow    =", int(math.Pow(float64(a), float64(n))))
+	fmt.Println("naive  =", naivePow(a, n))
 }
 
 /* быстрое возведение в степень
@@ -24,17 +26,14 @@ func main() {
    (a*a)^(n/2), при n - четное
 */
 func rapidExponentiation(a, n int) int {
-	res := 1
 	if n == 0 {
-		return res
+		return 1
 	}
 
 	if n%2 == 0 {
-		res = rapidExponentiation(a*a, n/2)
-	} else {
-		res = a * rapidExponentiation(a, n-1)
+		return rapidExponentiation(a*a, n/2)
 	}
-	return res
+	return a * rapidExponentiation(a, n-1)
 }
 
 /* быстрое возведение в степень
@@ -54,4 +53,15 @@ func rapidExponentiation2(a, n int) int {
 		return rapidExponentiation(a*a, n/2)
 	}
 	return a * rapidExponentiation(a, n-1)
+}
+
+func naivePow(a, n int) int {
+	res := 1
+	if n == 0 {
+		return res
+	}
+	for i := 1; i < n+1; i++ {
+		res *= a
+	}
+	return res
 }

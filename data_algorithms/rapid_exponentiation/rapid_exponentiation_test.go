@@ -27,6 +27,20 @@ func Test_pow(t *testing.T) {
 	assert.Equal(t, expected, res)
 }
 
+func Test_naive(t *testing.T) {
+	a, n := 2, 10
+	expected := 1024
+	res := naivePow(a, n)
+	assert.Equal(t, expected, res)
+}
+
+func Benchmark_naive(b *testing.B) {
+	a, n := 2, 36
+	for i := 0; i < b.N; i++ {
+		naivePow(a, n)
+	}
+}
+
 func Benchmark_rapidExponentiation(b *testing.B) {
 	a, n := 2, 36
 	for i := 0; i < b.N; i++ {
@@ -53,7 +67,8 @@ goos: linux
 goarch: amd64
 pkg: leetcode/data_algorithms/rapid_exponentiation
 cpu: Intel(R) Core(TM) i3-10100 CPU @ 3.60GHz
-Benchmark_rapidExponentiation-8    	100000000	        11.31 ns/op	       0 B/op	       0 allocs/op
-Benchmark_rapidExponentiation2-8   	100000000	        10.79 ns/op	       0 B/op	       0 allocs/op
-Benchmark_pow-8                    	55795579	        21.42 ns/op	       0 B/op	       0 allocs/op
+Benchmark_naive-8                  	62974935	        18.85 ns/op	       0 B/op	       0 allocs/op
+Benchmark_rapidExponentiation-8    	100000000	        10.57 ns/op	       0 B/op	       0 allocs/op
+Benchmark_rapidExponentiation2-8   	121819239	         9.753 ns/op	   0 B/op	       0 allocs/op
+Benchmark_pow-8                    	55227450	        21.66 ns/op	       0 B/op	       0 allocs/op
 */
