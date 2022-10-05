@@ -63,7 +63,7 @@ func main() {
 	//words, maxWidth := []string{"This", "is", "an", "example", "of", "text", "justification."}, 16
 	//words, maxWidth := []string{"What", "must", "be", "acknowledgment", "shall", "be"}, 16
 	words, maxWidth := []string{"Science", "is", "what", "we", "understand", "well", "enough", "to", "explain", "to", "a", "computer.", "Art", "is", "everything", "else", "we", "do"}, 20
-	//words, maxWidth := []string{"Ab", "cd", "ef", "gh", "of", "tx", "."}, 11
+	//words, maxWidth := []string{"Ab", "cd", "ef", "gh", "of", "tx", "."}, 14
 	//words, maxWidth := []string{"a"}, 8
 	text := fullJustify(words, maxWidth)
 	printText(text)
@@ -89,25 +89,22 @@ func fullJustify(words []string, maxWidth int) []string {
 func buildLine(words []string, idxA, maxWidth int) (string, int) {
 	const whitespace = " "
 	var line string
-	var idxB, sum, sumLenWords int
+	var sum, sumLenWords int
+
+	// определяем индекс последнего слова которое может поместиться в строке (idxB)
+	idxB := idxA
 	for i := idxA; i < len(words); i++ {
-		idxB = i
 		l := len(words[i])
-		sumLenWords += l
 		sum += l
 		if sum > maxWidth {
-			sumLenWords -= l
-			idxB--
 			break
 		}
-
-		if sum == maxWidth {
+		idxB = i
+		sumLenWords += l
+		if sum == maxWidth || sum+1 == maxWidth {
 			break
 		}
 		sum++
-		if sum == maxWidth {
-			break
-		}
 	}
 
 	if idxB == len(words)-1 { // если последняя строка
@@ -121,28 +118,28 @@ func buildLine(words []string, idxA, maxWidth int) (string, int) {
 		return line, idxB + 1
 	}
 
-	if idxA != idxB { // если в строке больше одного слова
-		countWhitespace := (maxWidth - sumLenWords) / (idxB - idxA)
-		remains := (maxWidth - sumLenWords) % (idxB - idxA)
-		if countWhitespace == 0 {
-			countWhitespace = 1
-		}
-
-		for i := idxA; i <= idxB; i++ {
-			line += words[i]
-			if i != idxB {
-				line += strings.Repeat(whitespace, countWhitespace)
-				if remains > 0 {
-					line += whitespace
-					remains--
-				}
-			}
-		}
+	// если в строке помещается только одно слово
+	if idxA == idxB {
+		line += words[idxA] + strings.Repeat(whitespace, maxWidth-sumLenWords)
 		return line, idxB + 1
 	}
 
-	// если в строке помещается только одно слово
-	line += words[idxA] + strings.Repeat(whitespace, maxWidth-sumLenWords)
+	// если в строке больше одного слова
+	countWhitespace := (maxWidth - sumLenWords) / (idxB - idxA)
+	remains := (maxWidth - sumLenWords) % (idxB - idxA)
+	if countWhitespace == 0 {
+		countWhitespace = 1
+	}
 
+	for i := idxA; i <= idxB; i++ {
+		line += words[i]
+		if i != idxB {
+			line += strings.Repeat(whitespace, countWhitespace)
+			if remains > 0 {
+				line += whitespace
+				remains--
+			}
+		}
+	}
 	return line, idxB + 1
 }
