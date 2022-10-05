@@ -56,7 +56,6 @@ package main
 
 import (
 	"fmt"
-	"strings"
 )
 
 func main() {
@@ -87,7 +86,6 @@ func fullJustify(words []string, maxWidth int) []string {
 }
 
 func buildLine(words []string, idxA, maxWidth int) (string, int) {
-	const whitespace = " "
 	var line string
 	var sum, sumLenWords int
 
@@ -111,16 +109,16 @@ func buildLine(words []string, idxA, maxWidth int) (string, int) {
 		for i := idxA; i <= idxB; i++ {
 			line += words[i]
 			if i != idxB {
-				line += whitespace
+				line += whitespaceRepeat(1)
 			}
 		}
-		line += strings.Repeat(whitespace, maxWidth-len(line))
+		line += whitespaceRepeat(maxWidth - len(line))
 		return line, idxB + 1
 	}
 
 	// если в строке помещается только одно слово
 	if idxA == idxB {
-		line += words[idxA] + strings.Repeat(whitespace, maxWidth-sumLenWords)
+		line += words[idxA] + whitespaceRepeat(maxWidth-sumLenWords)
 		return line, idxB + 1
 	}
 
@@ -134,12 +132,26 @@ func buildLine(words []string, idxA, maxWidth int) (string, int) {
 	for i := idxA; i <= idxB; i++ {
 		line += words[i]
 		if i != idxB {
-			line += strings.Repeat(whitespace, countWhitespace)
+			line += whitespaceRepeat(countWhitespace)
 			if remains > 0 {
-				line += whitespace
+				line += whitespaceRepeat(1)
 				remains--
 			}
 		}
 	}
 	return line, idxB + 1
+}
+
+// строка из n пробелов
+func whitespaceRepeat(n int) string {
+	const whitespace = " "
+	if n < 0 {
+		return whitespace
+	}
+
+	var res string
+	for i := 0; i < n; i++ {
+		res += whitespace
+	}
+	return res
 }
