@@ -24,9 +24,19 @@ func main() {
 	//nums := []int{1} // 1
 	//nums := []int{5, 4, -1, 7, 8} // 23
 	//nums := []int{-1} // -1
-	nums := []int{-2, -3, -1} // -1
+	//nums := []int{-2, -3, -1, 0, -2, 1, 0, -2, 3, -10, 0, 0, 0, 1, 0, -1, 0, 1, -2, 2, 8, -1}
+	nums := []int{3, -10, -2, 2, 2, -1} // ???
+	//nums := []int{-2, 3, -10, -2, 2, 0, -1} // ???
+
+	fmt.Println(nums)
+
 	res := maxSubArray(nums)
-	fmt.Println(res)
+	fmt.Println("res =", res)
+	fmt.Println()
+
+	sum, array := maxSubArray2(nums)
+	fmt.Println("sum =", sum)
+	fmt.Println(array)
 }
 
 // алгоритм Кадане
@@ -61,4 +71,49 @@ func max(a, b int) int {
 		return a
 	}
 	return b
+}
+
+func maxSubArray2(nums []int) (int, []int) {
+	if len(nums) == 0 {
+		return 0, nums
+	}
+	f := true
+	var sum, maxSum int
+	sum = -1000000
+
+	resIdx := make([]int, 0, len(nums))
+	for idx, d := range nums {
+		if f {
+			if d < 0 {
+				sum = max(sum, d)
+				maxSum = sum
+				resIdx = []int{idx}
+				continue
+			} else {
+				sum = 0
+				f = false
+			}
+		}
+
+		sum += d
+		sum = max(sum, 0)
+		if sum == 0 {
+			resIdx = nil
+		}
+
+		maxSum = max(maxSum, sum)
+		if maxSum == sum {
+			resIdx = append(resIdx, idx)
+		}
+
+	}
+
+	var i, j, l int
+	l = len(resIdx)
+	if l > 0 {
+		i = resIdx[0]
+		j = resIdx[l-1]
+	}
+	fmt.Printf("i=%d, j=%d\n", i, j)
+	return maxSum, nums[i : j+1]
 }
