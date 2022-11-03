@@ -27,8 +27,8 @@ func main() {
 	//intervals := [][]int{{1, 4}, {4, 5}}
 	//intervals := [][]int{{5, 9}, {4, 7}}
 	//intervals := [][]int{{1, 3}, {2, 6}, {8, 10}, {15, 18}}
-	//intervals := [][]int{{0, 1}, {2, 6}, {5, 10}, {9, 18}}
-	intervals := [][]int{{1, 4}, {0, 0}}
+	intervals := [][]int{{0, 1}, {2, 6}, {5, 10}, {9, 18}}
+	//intervals := [][]int{{1, 4}, {0, 0}}
 	res := merge(intervals)
 	fmt.Println("res:", res)
 
@@ -37,7 +37,7 @@ func main() {
 
 func merge(intervals [][]int) [][]int {
 	for i := 0; i < len(intervals)-1; i++ {
-		for j := i; j < len(intervals); j++ {
+		for j := i + 1; j < len(intervals); j++ {
 			tmp, ok := isIntersection(intervals[i], intervals[j])
 			if ok {
 				intervals[i] = nil
